@@ -1,0 +1,12 @@
+server:
+  port: 8080
+  host: 0.0.0.0
+
+database:
+  path: ./data/nasnav.db
+
+auth:
+  password: "your-secret-password"
+
+site:
+  title: "NAS导航"
