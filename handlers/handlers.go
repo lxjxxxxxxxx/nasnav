@@ -112,7 +112,7 @@ func ReorderCategories(w http.ResponseWriter, r *http.Request) {
 }
 
 // GetBookmarks 获取书签列表，支持按分类ID筛选
-func GetBookmarks(w http.ResponseWriter, r *http.Request) {
+func GetBookmarks(w http.ResponseWriter, r *http.Request, isAuthenticated bool) {
 	categoryIDStr := r.URL.Query().Get("category_id")
 	var categoryID int64
 	if categoryIDStr != "" {
@@ -124,7 +124,7 @@ func GetBookmarks(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	bookmarks, err := database.GetBookmarks(categoryID)
+	bookmarks, err := database.GetBookmarks(categoryID, isAuthenticated)
 	if err != nil {
 		WriteError(w, http.StatusInternalServerError, "Failed to get bookmarks")
 		return

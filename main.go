@@ -34,6 +34,7 @@ func main() {
 	exeDir := getExeDir()
 
 	configPath := filepath.Join(exeDir, "config.yaml")
+	//configPath := "config.yaml"
 	cfg, err := config.Load(configPath)
 	if err != nil {
 		log.Fatalf("Failed to load config: %v", err)
@@ -140,7 +141,9 @@ func categoriesHandlerWithID(w http.ResponseWriter, r *http.Request) {
 func bookmarksHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
-		handlers.GetBookmarks(w, r)
+		password := r.URL.Query().Get("password")
+		hasAuth := password == authPassword
+		handlers.GetBookmarks(w, r, hasAuth)
 	case "POST":
 		authWrap(handlers.CreateBookmark)(w, r)
 	default:

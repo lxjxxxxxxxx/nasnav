@@ -6,8 +6,9 @@ import (
 	"os"
 	"path/filepath"
 
-	_ "modernc.org/sqlite"
 	"nasnav/models"
+
+	_ "modernc.org/sqlite"
 )
 
 var DB *sql.DB
@@ -143,7 +144,7 @@ func UpdateCategoryOrder(ids []int64) error {
 }
 
 // GetBookmarks 获取书签列表，categoryID为0时获取所有书签，否则获取指定分类的书签
-func GetBookmarks(categoryID int64) ([]models.BookmarkWithCategory, error) {
+func GetBookmarks(categoryID int64, isAuthenticated bool) ([]models.BookmarkWithCategory, error) {
 	var rows *sql.Rows
 	var err error
 
@@ -184,6 +185,10 @@ func GetBookmarks(categoryID int64) ([]models.BookmarkWithCategory, error) {
 		b.Password = password.String
 		b.Icon = icon.String
 		b.CategoryName = categoryName.String
+		if !isAuthenticated {
+			b.Account = ""
+			b.Password = ""
+		}
 		bookmarks = append(bookmarks, b)
 	}
 	return bookmarks, nil

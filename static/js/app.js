@@ -52,9 +52,9 @@ async function fetchCategories() {
 
 async function fetchBookmarks(categoryId = 0) {
     try {
-        let url = '/api/bookmarks';
+        let url = `/api/bookmarks?password=${encodeURIComponent(password)}`;
         if (categoryId > 0) {
-            url += `?category_id=${categoryId}`;
+            url += `&category_id=${categoryId}`;
         }
         const res = await fetch(url);
         const data = await res.json();
